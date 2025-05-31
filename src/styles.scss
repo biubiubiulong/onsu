@@ -22,3 +22,13 @@ body {
   background-color: #121212;
   color: #e0e0e0;
 }
+
+/* Ensure all Angular CDK overlays (including <mat-menu>) float above any routed view. */
+.cdk-overlay-container {
+  z-index: 1000; 
+}
+
+/* Make sure the mat-menu panel specifically is even higher than 1000. */
+.mat-menu-panel {
+  z-index: 1100 !important;
+}

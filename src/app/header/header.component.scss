@@ -1,0 +1,81 @@
+.top-toolbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 1.5em;
+    height: 6em;
+    color: #18375b;
+    background-color: white;
+  
+    .left-section,
+    .center-section,
+    .right-section {
+      display: flex;
+      align-items: center;
+    }
+  
+    .left-section {
+      gap: 0.5em;
+  
+      .brand {
+        font-weight: bold;
+        font-size: 2rem;
+        cursor: pointer;
+      }
+  
+      .brand:hover {
+        background-color: rgba(0, 0, 0, 0.05);
+      }
+    }
+  
+    .center-section {
+      flex: 1;
+      justify-content: center;
+  
+      .search-bar {
+        width: 100%;
+        max-width: 60vw;
+      }
+    }
+  
+    ::ng-deep .mat-form-field-appearance-outline.mat-focused .mat-form-field-outline-thick {
+      color: black !important;     // Or your desired border color
+      border-color: black !important;
+    }
+  
+    .right-section {
+      gap: 1em;
+  
+      button {
+        padding: 0.5em 1em;
+      }
+  
+      img {
+        cursor: pointer;
+      }
+    }
+  }
+    
+  .second-toolbar {
+    display: flex;
+    justify-content: center; /* Center the second row */
+    align-items: center;
+    height: 3em;
+    background-color: #00458b; /* Light gray for the second row */
+    padding: 10px 0; /* Add padding for the second toolbar to make it look better */
+  
+    .nav-container {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      width: 100%; /* Take full width for better layout control */
+      .nav-button {
+        margin: 0 10px; /* Space between buttons */
+      }
+    }
+  }
+  
+  button {
+    border-radius: 4px; /* Add this to round ripple corners */
+    overflow: hidden;   /* Ensure ripple stays inside */
+  }

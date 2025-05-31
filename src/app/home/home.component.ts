@@ -7,12 +7,14 @@ import { Component } from '@angular/core';
 })
 export class HomeComponent {
   images: string[] = [
-    'assets/images/Japan1.jpg',
-    'assets/images/Japan2.jpg',
-    'assets/images/Japan3.jpg'
+    'assets/images/bg1.jpg',
+    'assets/images/bg2.jpg',
+    'assets/images/bg3.jpg'
   ];
   currentImageIndex = 0;
   currentImage = this.images[0];
+
+  whyChooseOnsuImage = 'assets/images/why_choose_onsu.png'
 
   ngOnInit(): void {
     setInterval(() => {

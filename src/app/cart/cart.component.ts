@@ -30,8 +30,8 @@ export class CartComponent {
         {price: product.priceId, quantity: 1},
       ],
       mode: 'payment',
-      successUrl: window.location.origin + '/tinko/success',
-      cancelUrl: window.location.origin + '/tinko/cancel',
+      successUrl: window.location.origin + '/onsu/success',
+      cancelUrl: window.location.origin + '/onsu/cancel',
     });
 
     if (error) {

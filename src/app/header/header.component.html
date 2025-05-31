@@ -1,0 +1,84 @@
+<!-- === Second/Floating Toolbar (optional) === -->
+<mat-toolbar color="accent" class="second-toolbar">
+  <div class="nav-container">
+    <img src="assets/icons/facebook.svg" alt="Custom Icon" width="25" height="25">
+    <img src="assets/icons/instagram.svg" alt="Custom Icon" width="25" height="25">
+  </div>
+</mat-toolbar>
+
+<!-- === Main Top Toolbar === -->
+<mat-toolbar color="primary" class="top-toolbar">
+  <!-- Left Section -->
+  <div class="left-section">
+    <img src="assets/icons/onsu.svg" alt="Custom Icon" width="60" height="60">
+    <span class="brand" (click)="goToHome()">ONSU</span>
+  </div>
+
+  <!-- Center Section (Search Bar) -->
+  <div class="center-section">
+    <mat-form-field
+      class="search-bar"
+      appearance="outline"
+      floatLabel="auto"
+    >
+      <mat-label>Search products...</mat-label>
+      <input
+        matInput
+        [(ngModel)]="searchText"
+        (focus)="onFocus()"
+        (blur)="onBlur()"
+      />
+      <button mat-icon-button matSuffix>
+        <mat-icon>search</mat-icon>
+      </button>
+      <button
+        *ngIf="searchText"
+        mat-icon-button
+        matSuffix
+        aria-label="Clear"
+        (click)="clearSearch()"
+      >
+        <mat-icon>close</mat-icon>
+      </button>
+    </mat-form-field>
+  </div>
+
+  <!-- Right Section (Products Menu + Other Items) -->
+  <div class="right-section">
+    <!-- 1) “Products” button MUST live in this toolbar -->
+    <div class="products-wrapper">
+      <button
+      mat-button
+      [matMenuTriggerFor]="productMenu"
+      aria-label="Open products menu"
+      overlapTrigger="false"
+      panelClass="pull-up-menu"
+    >
+      Products
+    </button>
+  
+    </div>
+
+    <button mat-button>En</button>
+    <img
+      src="assets/icons/cart.svg"
+      alt="Cart"
+      width="25"
+      height="25"
+      (click)="goToCart()"
+    />
+  </div>
+</mat-toolbar>
+
+  <!-- 2) The <mat-menu> MUST be in this same template (same <div>), not inside a routed child. -->
+  <mat-menu
+    #productMenu="matMenu"
+    xPosition="after"
+    yPosition="below"
+    [overlapTrigger]="false"
+  >
+    <button mat-menu-item>Option 1</button>
+    <button mat-menu-item>Option 2</button>
+    <button mat-menu-item>Option 3</button>
+    <button mat-menu-item>Option 4</button>
+  </mat-menu>
