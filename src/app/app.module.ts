@@ -14,12 +14,24 @@ import { FormsModule } from '@angular/forms';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatSelectModule } from '@angular/material/select'; 
 import { HeaderComponent } from './header/header.component';
+import { ProductMenuModule } from './header/product-menu/product-menu.module';
+import { ProductCardModule } from './product-list/product-card/product-card.module';
+import { ProductListComponent } from './product-list/product-list.component';
+import { ProductService } from './services/product.service';
+import { CartService } from './services/cart.service';
+import { CheckoutComponent } from './checkout/checkout.component';
+import { MatBadgeModule }               from '@angular/material/badge';
+import { ProductDetailComponent } from './product-detail/product-detail.component';
+import { HttpClientModule } from '@angular/common/http';
 
 @NgModule({
   declarations: [
     AppComponent,
     HeaderComponent,
     HomeComponent,
+    ProductListComponent,
+    CheckoutComponent,
+    ProductDetailComponent
   ],
   imports: [
     FormsModule,
@@ -32,9 +44,13 @@ import { HeaderComponent } from './header/header.component';
     MatFormFieldModule,
     MatInputModule,
     MatMenuModule,
-    MatSelectModule
+    MatSelectModule,
+    MatBadgeModule,
+    ProductMenuModule,
+    ProductCardModule,
+    HttpClientModule
   ],
-  providers: [],
+  providers: [CartService, ProductService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

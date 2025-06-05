@@ -1,0 +1,31 @@
+<mat-menu
+    #menu="matMenu"
+    xPosition="after"
+    yPosition="below"
+    [overlapTrigger]="false"
+    class="product-menu"
+    >
+    <div class="menu-columns">
+        <!-- ─────────── LEFT COLUMN ─────────── -->
+        <div class="menu-column">
+            <div class="section-title">{{ 'Cables' }}</div>
+
+            <span class="sub-section" (click)="navigate('cables', 'car')"> {{ 'Car' }} </span>
+            <span class="sub-section" (click)="navigate('cables', 'truck')"> {{ 'Truck' }} </span>
+            <span class="sub-section" (click)="navigate('cables', 'tool')"> {{ 'Tool' }} </span>
+
+            
+            <div class="section-title housing clickable" (click)="navigate('housing')">{{ 'Housing' }}</div>
+        </div>
+
+        <!-- ────────── RIGHT COLUMN ──────────── -->
+        <div class="menu-column">
+            <div class="section-title clickable" (click)="navigate('test-lead-kit')">
+                {{ 'Test Lead Kit' }}
+            </div>
+            <div class="menu-image-container">
+                <img src="assets/images/test_lead_kit.jpg" />
+            </div>
+        </div>
+    </div>
+</mat-menu>

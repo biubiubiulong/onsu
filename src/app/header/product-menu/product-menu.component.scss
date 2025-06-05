@@ -1,0 +1,77 @@
+
+/* header.component.scss (or whatever file you use for your menu’s styles) */
+
+.product-menu {
+    .menu-columns {
+      display: flex;
+    }
+  
+    .menu-column {
+      flex: 1 1 0;
+      display: flex;
+      flex-direction: column;
+      box-sizing: border-box;
+      padding: 2em 4em;
+      text-align: center;
+    }
+  
+    .section-title {
+      position: relative;
+      font-weight: 600;
+      font-size: 1rem;
+      margin-bottom: 8px;
+      color: black;
+      display: inline-block; /* so the ::after lines up nicely */
+
+      &.housing {
+        padding-top: 1em
+      }
+
+      &.clickable {
+        cursor: pointer;
+      }
+      &.clickable:after {
+        content: "⟶"; 
+        font-size: 1rem;  
+        color: grey;  
+        margin-left: 4px;   
+      }
+    }
+
+    .sub-section {
+      padding: 0.2em;
+      text-decoration: none;
+      cursor: pointer;
+    }
+    .sub-section:hover {
+      text-decoration: underline;
+    }
+
+    .test-lead-title {
+      margin-bottom: -8px;
+    }
+  
+    .menu-image-container {
+      margin-top: 8px;
+      text-align: center;   /* center the image horizontally */
+      img {
+        width: 15em;
+        height: auto;
+      }
+    }
+  
+    button.mat-menu-item {
+      width: 100%;
+      justify-content: flex-start; /* left-align text + icon */
+    }
+  
+    .menu-column + .menu-column {
+      border-left: 1px solid rgba(0, 0, 0, 0.12);   /* vertical divider between columns */
+    }
+  }
+  
+.mat-menu-panel {
+    max-width: none !important;
+    max-height: none !important;
+    background-color: white;
+}

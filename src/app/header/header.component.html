@@ -19,7 +19,6 @@
     <mat-form-field
       class="search-bar"
       appearance="outline"
-      floatLabel="auto"
     >
       <mat-label>Search products...</mat-label>
       <input
@@ -49,7 +48,7 @@
     <div class="products-wrapper">
       <button
       mat-button
-      [matMenuTriggerFor]="productMenu"
+      [matMenuTriggerFor]="productMenu.menu"
       aria-label="Open products menu"
       overlapTrigger="false"
       panelClass="pull-up-menu"
@@ -59,7 +58,14 @@
   
     </div>
 
-    <button mat-button>En</button>
+    <button
+    mat-icon-button
+    [routerLink]="['/checkout']"
+    aria-label="View Cart / Checkout"
+    matBadge="{{ (totalItemsInCart$ | async) }}"
+    matBadgeColor="warn"
+    [matBadgeHidden]="(totalItemsInCart$ | async) === 0"
+  >
     <img
       src="assets/icons/cart.svg"
       alt="Cart"
@@ -67,18 +73,8 @@
       height="25"
       (click)="goToCart()"
     />
+  </button>
   </div>
 </mat-toolbar>
 
-  <!-- 2) The <mat-menu> MUST be in this same template (same <div>), not inside a routed child. -->
-  <mat-menu
-    #productMenu="matMenu"
-    xPosition="after"
-    yPosition="below"
-    [overlapTrigger]="false"
-  >
-    <button mat-menu-item>Option 1</button>
-    <button mat-menu-item>Option 2</button>
-    <button mat-menu-item>Option 3</button>
-    <button mat-menu-item>Option 4</button>
-  </mat-menu>
+<app-product-menu #productMenu></app-product-menu>

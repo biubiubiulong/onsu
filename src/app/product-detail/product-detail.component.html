@@ -1,0 +1,12 @@
+<app-header></app-header>
+
+<!-- src/app/pages/product-detail/product-detail.component.html -->
+<div class="detail-container" *ngIf="product; else loading">
+  <h2>{{ product.name }}</h2>
+  <p>Category: {{ category }} / {{ subcategory }}</p>
+  <p>Price: €{{ product.price }}</p>
+  <!-- add image carousel, description, Add to Cart, etc. -->
+</div>
+<ng-template #loading>
+  <p>Loading product…</p>
+</ng-template>

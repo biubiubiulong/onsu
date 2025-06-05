@@ -1,5 +1,7 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
+import { Observable } from 'rxjs';
+import { CartService } from '../services/cart.service';
 
 @Component({
   selector: 'app-header',
@@ -12,7 +14,11 @@ export class HeaderComponent {
   searchText: string = '';
   isFocused: boolean = false;
 
-  constructor(private router: Router) {}
+  totalItemsInCart$: Observable<number>;
+
+  constructor(private router: Router, private cartService: CartService) {
+    this.totalItemsInCart$ = this.cartService.totalQuantity$;
+  }
   
   clearSearch() {
     this.searchText = ''; 
@@ -27,7 +33,7 @@ export class HeaderComponent {
   }  
   
   goToCart(): void {
-    this.router.navigate(['/cart']);
+    this.router.navigate(['/checkout']);
   }
   
   goToHome() {

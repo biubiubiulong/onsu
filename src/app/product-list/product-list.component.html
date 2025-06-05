@@ -1,0 +1,41 @@
+<app-header></app-header>
+
+<!-- src/app/pages/product-list/product-list.component.html -->
+<div *ngIf="!loading" class="page-container">
+    <!-- 1) Page title + subtitle -->
+    <div class="page-header">
+        <h1 *ngIf="!category">All Products</h1>
+        <h1 *ngIf="category && !subcategory">{{ category | titlecase }}</h1>
+        <h1 *ngIf="category && subcategory">
+          {{ (subcategory | titlecase) }} in {{ (category | titlecase) }}
+        </h1>
+    </div>
+  
+    <!-- 2) Breadcrumbs -->
+    <nav class="breadcrumbs">
+      <ng-container *ngFor="let bc of breadcrumbs; let last = last">
+        <a [routerLink]="bc.url">{{ bc.label }}</a>
+        <span *ngIf="!last" class="separator">/</span>
+      </ng-container>
+    </nav>
+  
+    <!-- 3) Filter toolbar -->
+    <div class="filter-bar">
+      <button mat-button (click)="onSortChange('popularity')">SORT</button>
+      <button mat-button (click)="onFilter('size')">SIZE</button>
+      <button mat-button (click)="onFilter('style')">STYLE</button>
+      <button mat-button (click)="onFilter('color')">COLOR</button>
+      <button mat-button (click)="onFilter('collection')">COLLECTION</button>
+      <button mat-button (click)="onFilter('support')">SUPPORT LEVEL</button>
+      <button mat-button (click)="onFilter('target')">TARGET</button>
+    </div>
+  
+    <!-- 4) Product grid -->
+    <div class="product-grid">
+      <app-product-card
+        *ngFor="let product of products"
+        [product]="product"
+      ></app-product-card>
+    </div>
+  </div>
+  

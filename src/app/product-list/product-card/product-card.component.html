@@ -1,0 +1,83 @@
+<div class="card-container">
+  <!-- ================== Image + Carousel Area ================== -->
+  <div class="image-wrapper">
+    <img
+      [src]="product.images[currentImageIndex].image"
+      [alt]="product.name"
+      class="product-image"
+    />
+
+    <!-- Left/Right arrows if multiple images -->
+    <button
+      *ngIf="product.images.length > 1"
+      class="arrow left-arrow"
+      (click)="prevImage()"
+      aria-label="Previous image"
+    >
+      ‹
+    </button>
+    <button
+      *ngIf="product.images.length > 1"
+      class="arrow right-arrow"
+      (click)="nextImage()"
+      aria-label="Next image"
+    >
+      ›
+    </button>
+
+    <!-- Dot indicators -->
+    <div *ngIf="product.images.length > 1" class="dot-container">
+      <span
+        *ngFor="let _ of product.images; index as i"
+        class="dot"
+        [class.active]="i === currentImageIndex"
+        (click)="goToImage(i)"
+      ></span>
+    </div>
+
+    <!-- ================== Cart Action (bottom-right) ================== -->
+    <div class="image-cart-action" (click)="$event.stopPropagation()">
+      <!-- 1) Collapsed: show single + or quantity-in-circle -->
+      <button
+        *ngIf="!isEditingQuantity"
+        class="collapsed-circle"
+        mat-icon-button
+        (click)="toggleQuantityEditor()"
+        aria-label="Add to Cart"
+      >
+        <!-- If quantity === 0, show a plus icon; else show the number -->
+        <ng-container *ngIf="quantity === 0; else showQty">
+          <mat-icon>add</mat-icon>
+        </ng-container>
+        <ng-template #showQty>{{ quantity }}</ng-template>
+      </button>
+
+      <!-- 2) Expanded: show [ –  n  + ] UI -->
+      <div *ngIf="isEditingQuantity" class="quantity-picker">
+        <button
+          class="qty-btn"
+          mat-icon-button
+          (click)="decrement()"
+          aria-label="Decrease quantity"
+        >
+          <mat-icon>remove</mat-icon>
+        </button>
+        <span class="qty-number">{{ quantity }}</span>
+        <button
+          class="qty-btn"
+          mat-icon-button
+          (click)="increment()"
+          aria-label="Increase quantity"
+        >
+          <mat-icon>add</mat-icon>
+        </button>
+      </div>
+    </div>
+  </div>
+  <!-- ================== Product Info (Category, Name, Price) ================== -->
+  <div (click)="gotoProductDetail()" class="info">
+    <div class="category">{{ product.category.name | uppercase }}</div>
+    <div class="name">{{ product.name }}</div>
+    <div class="price">€ {{ product.price }}</div>
+  </div>
+</div>
