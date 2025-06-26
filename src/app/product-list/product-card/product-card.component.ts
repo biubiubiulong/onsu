@@ -8,6 +8,7 @@ import {
 import { CartService } from '../../services/cart.service';
 import { Product } from 'src/app/product.model';
 import { ActivatedRoute, Router } from '@angular/router';
+import { ProductService } from 'src/app/services/product.service';
 
 @Component({
   selector: 'app-product-card',
@@ -17,7 +18,6 @@ import { ActivatedRoute, Router } from '@angular/router';
 export class ProductCardComponent implements OnInit {
   @Input() product!: Product;
 
-  currentImageIndex = 0;
   quantity = 0;
 
   /**
@@ -30,32 +30,13 @@ export class ProductCardComponent implements OnInit {
     private router: Router,
     private route: ActivatedRoute,
     private cartService: CartService,
+    public productService: ProductService,
     private hostRef: ElementRef<HTMLElement>
   ) {}
 
   ngOnInit(): void {
-    this.currentImageIndex = 0;
   }
 
-  // ========== Image carousel logic (unchanged) ==========
-  prevImage(): void {
-    const len = this.product.images.length;
-    this.currentImageIndex =
-      (this.currentImageIndex - 1 + len) % len;
-    console.log("product.images[currentImageIndex]: ", this.product.images)
-  }
-
-  nextImage(): void {
-    const len = this.product.images.length;
-    this.currentImageIndex =
-      (this.currentImageIndex + 1) % len;
-  }
-
-  goToImage(i: number): void {
-    if (i >= 0 && i < this.product.images.length) {
-      this.currentImageIndex = i;
-    }
-  }
 
   // ========== Quantity / Cart logic ==========
 
@@ -114,7 +95,8 @@ export class ProductCardComponent implements OnInit {
     }
   }
 
-  gotoProductDetail() {
+  gotoProductDetail($event: MouseEvent) {
+    $event.stopPropagation();
     this.router.navigate([this.product.id], { relativeTo: this.route });
   }
 }

@@ -10,52 +10,42 @@
 <mat-toolbar color="primary" class="top-toolbar">
   <!-- Left Section -->
   <div class="left-section">
-    <img src="assets/icons/onsu.svg" alt="Custom Icon" width="60" height="60">
-    <span class="brand" (click)="goToHome()">ONSU</span>
+    <img src="assets/icons/onsu.svg" alt="Custom Icon" width="50" height="50">
+    <span class="brand" (click)="goToHome()">ONSU TECH</span>
   </div>
 
   <!-- Center Section (Search Bar) -->
   <div class="center-section">
-    <mat-form-field
-      class="search-bar"
-      appearance="outline"
-    >
-      <mat-label>Search products...</mat-label>
+    <div class="custom-search">
       <input
-        matInput
+        type="text"
         [(ngModel)]="searchText"
+        placeholder="Search products..."
         (focus)="onFocus()"
         (blur)="onBlur()"
       />
-      <button mat-icon-button matSuffix>
+      <button>
         <mat-icon>search</mat-icon>
       </button>
-      <button
-        *ngIf="searchText"
-        mat-icon-button
-        matSuffix
-        aria-label="Clear"
-        (click)="clearSearch()"
-      >
+      <button *ngIf="searchText" (click)="clearSearch()" aria-label="Clear">
         <mat-icon>close</mat-icon>
       </button>
-    </mat-form-field>
+    </div>
   </div>
 
   <!-- Right Section (Products Menu + Other Items) -->
   <div class="right-section">
     <!-- 1) “Products” button MUST live in this toolbar -->
-    <div class="products-wrapper">
-      <button
-      mat-button
-      [matMenuTriggerFor]="productMenu.menu"
-      aria-label="Open products menu"
-      overlapTrigger="false"
-      panelClass="pull-up-menu"
-    >
-      Products
-    </button>
-  
+    <div class="menu-wrapper" (mouseenter)="toggleMenu(true)" (mouseleave)="toggleMenu(false)">
+      <div class="menu-trigger"> OEM Scan Tool &nbsp;
+        <img [class.rotated]="isMenuOpen" src="assets/icons/arrow_down.svg" alt="Custom Icon" width="15" height="15">
+      </div>
+
+      <div class="dropdown-panel" [class.open]="isMenuOpen">
+        <ng-container *ngFor="let sub of OEMScanToolLabel | keyvalue: preservedOrder">
+          <div class="menu-item"  (click)="goToSubcategory(CategoryType.OEMScanTool, sub.key)">{{ sub.value }}</div>
+        </ng-container>
+      </div>
     </div>
 
     <button
@@ -67,6 +57,7 @@
     [matBadgeHidden]="(totalItemsInCart$ | async) === 0"
   >
     <img
+      class="cart"
       src="assets/icons/cart.svg"
       alt="Cart"
       width="25"

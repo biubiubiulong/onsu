@@ -9,8 +9,8 @@ from products.models import Category, Subcategory, Product, ProductImage
 
 class Command(BaseCommand):
     help = (
-        "Import products from a CSV file with columns: "
-        "name,price,is_active,image_1,image_2,image_3,…"
+        "name,price,price_id,is_active,category,subcategory,"
+        "features,functions,specifications,image_1,image_2…"
     )
 
     def add_arguments(self, parser):
@@ -46,23 +46,19 @@ class Command(BaseCommand):
             for row_num, row in enumerate(reader, start=2):
                 name = row.get("name", "").strip()
                 price_str = row.get("price", "").strip()
+                price_id = row.get("price_id", "").strip()
                 is_active = row.get("is_active", "").strip().lower() in ("1", "true", "yes")
                 category_name = row.get("category", "").strip()
                 subcategory_name = row.get("subcategory", "").strip()
 
-                if not name:
-                    self.stderr.write(f"[Line {row_num}] Missing product name, skipping.")
+                if not (name and price_id and category_name):
+                    self.stderr.write(f"[Line {row_num}] name/price_id/category required; skipping.")
                     continue
 
                 try:
                     price = float(price_str)
                 except ValueError:
                     self.stderr.write(f"[Line {row_num}] Invalid price '{price_str}' for '{name}', skipping.")
-                    continue
-
-                # Must have at least a category
-                if not category_name:
-                    self.stderr.write(f"[Line {row_num}] Missing category for '{name}'; skipping.")
                     continue
 
                 # Get or create Category
@@ -78,10 +74,11 @@ class Command(BaseCommand):
                 product, created = Product.objects.update_or_create(
                     name=name,
                     defaults={
-                        "price": price,
-                        "is_active": is_active,
-                        "category": category_obj,
-                        "subcategory": subcategory_obj,
+                        "price":        price,
+                        "price_id":    price_id,
+                        "is_active":    is_active,
+                        "category":     category_obj,
+                        "subcategory":  subcategory_obj,
                     },
                 )
                 if created:
@@ -90,6 +87,30 @@ class Command(BaseCommand):
                 else:
                     updated_count += 1
                     self.stdout.write(self.style.WARNING(f"Updated Product: '{name}'"))
+
+                # parse and assign features
+                raw_feats = row.get("features","").strip()
+                product.features = [
+                    f.strip() for f in raw_feats.split("|") if f.strip()
+                ]
+
+                # parse and assign functions
+                raw_funcs = row.get("functions","").strip()
+                product.functions = [
+                    fn.strip() for fn in raw_funcs.split("|") if fn.strip()
+                ]
+
+                # parse and assign specifications (key:value;key2:value2;…)
+                raw_specs = row.get("specifications","").strip()
+                specs = []
+                for item in raw_specs.split(";"):
+                    if ":" in item:
+                        k, v = item.split(":", 1)
+                        specs.append({"key": k.strip(), "value": v.strip()})
+                product.specifications = specs
+                
+                # save JSONField updates
+                product.save()
 
                 # Remove any existing images
                 for img in product.images.all():
@@ -102,7 +123,7 @@ class Command(BaseCommand):
                 for key, filename in row.items():
                     if not key.startswith("image_"):
                         continue
-                    filename = filename.strip()
+                    filename = (filename or "").strip()
                     if not filename:
                         continue
 

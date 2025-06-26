@@ -1,9 +1,8 @@
 // src/app/pages/product-detail/product-detail.component.ts
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, ParamMap } from '@angular/router';
-import { Observable, of } from 'rxjs';
 import {ProductService } from '../services/product.service';
-import { Product } from '../product.model';
+import { CategoryType, CategoryTypeLabel, OEMScanTool, OEMScanToolLabel, Product, SubcategoryName } from '../product.model';
 
 @Component({
   selector: 'app-product-detail',
@@ -11,28 +10,41 @@ import { Product } from '../product.model';
   styleUrls: ['./product-detail.component.scss']
 })
 export class ProductDetailComponent implements OnInit {
-  product: Product | undefined;
-  category: string | null = null;
-  subcategory: string | null = null;
+  product?: Product;
+  category = CategoryType.OEMScanTool;
+  subcategory?: SubcategoryName;
+  breadcrumbs?: {
+      label?: string;
+      url: string;
+  }[]
   id: string | null = null;
 
   constructor(
     private route: ActivatedRoute,
-    private productService: ProductService
+    public productService: ProductService
   ) {
   }
 
   ngOnInit(): void {
-    // Option A: Use a single subscription to get all params and then fetch the product
     this.route.paramMap.subscribe(async (params: ParamMap) => {
-      this.category = params.get('category');
-      this.subcategory = params.get('subcategory');
+      this.category = params.get('category') as CategoryType;
+      this.subcategory = params.get('subcategory') as OEMScanTool;
       this.id = params.get('id');
 
       if (this.id) {
-        // Assuming your ProductService has a method getProductById(id: string)
         this.product = await this.productService.getProductById(this.id);
       }
+      
+      const category = CategoryTypeLabel.get(this.category);
+      let path = [
+        { label: 'Home', url: '/' },
+        { label: category, url: `/products/${this.category}` },
+      ]
+      if (this.subcategory) {
+      const subcategory = OEMScanToolLabel.get(this.subcategory as OEMScanTool);
+        path.push( { label: subcategory, url: `/products/${this.category}/${this.subcategory}}` })
+      }
+      this.breadcrumbs = path
     });
 
     // Option B (RxJS switchMap):

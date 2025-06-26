@@ -20,8 +20,10 @@ const routes: Routes = [
     component: ProductDetailComponent
   },
   { path: 'checkout', component: CheckoutComponent },
+  { path: 'success', component: CheckoutComponent },
+  { path: 'cancel', component: CheckoutComponent },
   { path: '', component: HomeComponent }, // Home route
-  { path: '**', redirectTo: '/home' } // Catch-all for invalid routes
+  { path: '**', redirectTo: '' } // Catch-all for invalid routes
 ];
 
 @NgModule({

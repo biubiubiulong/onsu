@@ -1,7 +1,7 @@
 <!-- src/app/pages/checkout/checkout.component.html -->
 <div class="checkout-page">
     <h2>Checkout</h2>
-    <p>You have {{ (total$ | async) || 0 }} item(s) in your cart.</p>
+    <p>You have {{ (totalItems | async) || 0 }} item(s) in your cart.</p>
   
     <div *ngIf="cartItems.length === 0" class="empty-message">
       Your cart is empty.
@@ -14,16 +14,16 @@
           <div class="name">{{ item.product.name }}</div>
           <div class="quantity">Quantity: {{ item.quantity }}</div>
           <div class="price-per">Price: €{{ item.product.price }}/ea.</div>
-          <!-- <div class="subtotal">Subtotal: €{{ item.product.price * item.quantity }}</div> -->
+          <div class="subtotal">Subtotal: €{{ item.subtotal }}</div>
         </div>
       </div>
       <div class="total-block">
-        <strong>Total Items:</strong> {{ (total$ | async) }}<br />
+        <strong>Total Items:</strong> {{ (totalItems | async) }}<br />
         <strong>Total Price:</strong>
-        <!-- €{{ cartItems.reduce((sum, i) => sum + i.product.price * i.quantity, 0).toFixed(2) }} -->
+        €{{ totalPrice }}
       </div>
   
-      <button mat-raised-button color="primary" class="pay-button">
+      <button mat-raised-button color="primary" class="pay-button" (click)="handlePayment()">
         Proceed to Payment
       </button>
     </div>

@@ -2,16 +2,17 @@
   <!-- ================== Image + Carousel Area ================== -->
   <div class="image-wrapper">
     <img
-      [src]="product.images[currentImageIndex].image"
+      [src]="productService.getCurrentImage(product.id)?.image"
       [alt]="product.name"
-      class="product-image"
+      (click)="gotoProductDetail($event)"
+      class="product-image clickable"
     />
 
     <!-- Left/Right arrows if multiple images -->
     <button
       *ngIf="product.images.length > 1"
       class="arrow left-arrow"
-      (click)="prevImage()"
+      (click)="productService.prevImage(product.id)"
       aria-label="Previous image"
     >
       ‹
@@ -19,7 +20,7 @@
     <button
       *ngIf="product.images.length > 1"
       class="arrow right-arrow"
-      (click)="nextImage()"
+      (click)="productService.nextImage(product.id)"
       aria-label="Next image"
     >
       ›
@@ -28,10 +29,10 @@
     <!-- Dot indicators -->
     <div *ngIf="product.images.length > 1" class="dot-container">
       <span
-        *ngFor="let _ of product.images; index as i"
+        *ngFor="let image of product.images"
         class="dot"
-        [class.active]="i === currentImageIndex"
-        (click)="goToImage(i)"
+        [class.active]="image.id === productService.getCurrentImage(product.id)?.id"
+        (click)="productService.goToImage(product.id, image)"
       ></span>
     </div>
 
@@ -40,7 +41,8 @@
       <!-- 1) Collapsed: show single + or quantity-in-circle -->
       <button
         *ngIf="!isEditingQuantity"
-        class="collapsed-circle"
+        [class.add-icon]="quantity === 0"
+        [class.collapsed-circle]="quantity > 0"
         mat-icon-button
         (click)="toggleQuantityEditor()"
         aria-label="Add to Cart"
@@ -75,7 +77,7 @@
     </div>
   </div>
   <!-- ================== Product Info (Category, Name, Price) ================== -->
-  <div (click)="gotoProductDetail()" class="info">
+  <div (click)="gotoProductDetail($event)" class="info clickable">
     <div class="category">{{ product.category.name | uppercase }}</div>
     <div class="name">{{ product.name }}</div>
     <div class="price">€ {{ product.price }}</div>

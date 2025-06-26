@@ -11,6 +11,7 @@ export class AppComponent {
 
   searchText: string = '';
   isFocused: boolean = false;
+  isMenuOpen = false;
 
   constructor(private router: Router) {}
   
@@ -37,5 +38,10 @@ export class AppComponent {
   onSelect(option: string) {
     console.log('User clicked:', option);
     // … add any navigation or logic here …
+  }
+
+  onMenuToggle(isOpen: boolean){
+    this.isMenuOpen = isOpen;
+    console.log("isMenuOpen: ", this.isMenuOpen)
   }
 }

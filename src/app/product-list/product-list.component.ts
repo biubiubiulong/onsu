@@ -2,7 +2,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ProductService } from '../services/product.service';
 import { ActivatedRoute, ParamMap } from '@angular/router';
-import { PaginatedProducts, Product } from '../product.model';
+import { CategoryType, CategoryTypeLabel, OEMScanTool, OEMScanToolLabel, PaginatedProducts, Product, SubcategoryName } from '../product.model';
 
 @Component({
   selector: 'app-product-list',
@@ -13,28 +13,43 @@ export class ProductListComponent implements OnInit {
   products: Product[] = [];
   filtered: Product[] = [];
 
-  category: string | null = null;
-  subcategory: string | null = null;
+  category = CategoryType.OEMScanTool;
+  subcategory?: SubcategoryName;
+  breadcrumbs?: {
+      label: string | undefined;
+      url: string;
+  }[]
 
   loading = false;
   errorMessage: string | null = null;
 
   constructor(private productService: ProductService, private route: ActivatedRoute) {}
 
-  ngOnInit(): void {
-    this.fetchProducts();
+  async ngOnInit(): Promise<void> {
+    await this.fetchProducts();
     this.route.paramMap.subscribe((params: ParamMap) => {
-      this.category = params.get('category');
-      this.subcategory = params.get('subcategory');
+      this.category = params.get('category') as CategoryType;
+      this.subcategory = params.get('subcategory') as OEMScanTool;
       this.applyFilters();
+
+      const category = CategoryTypeLabel.get(this.category);
+      let path = [
+        { label: 'Home', url: '/' },
+        { label: category, url: `/products/${this.category}` },
+      ]
+      if (this.subcategory) {
+      const subcategory = OEMScanToolLabel.get(this.subcategory as OEMScanTool);
+        path.push( { label: subcategory, url: `/products/${this.category}/${this.subcategory}}` })
+      }
+      this.breadcrumbs = path
     });
   }
 
-  fetchProducts(): void {
+  async fetchProducts(): Promise<void> {
     this.loading = true;
     this.errorMessage = null;
 
-    this.productService.getProducts().subscribe({
+    (await this.productService.getProducts()).subscribe({
       next: (paginated: PaginatedProducts) => {
         this.products = paginated.results;
         this.loading = false;
@@ -44,14 +59,6 @@ export class ProductListComponent implements OnInit {
         this.loading = false;
       }
     })
-  }
-
-  get breadcrumbs() {
-    return [
-      { label: 'Home', url: '/' },
-      { label: this.category, url: `/products/${this.category}` },
-      { label: this.subcategory, url: `/products/${this.category}/${this.subcategory}` },
-    ]
   }
 
   private applyFilters() {

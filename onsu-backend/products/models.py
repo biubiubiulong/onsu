@@ -25,12 +25,13 @@ class Subcategory(models.Model):
         return f"{self.category.name} → {self.name}"
 
 class Product(models.Model):
-    name = models.CharField(max_length=200, unique=True)
-    price = models.DecimalField(max_digits=10, decimal_places=2)
-    is_active = models.BooleanField(default=True)
-    created_at = models.DateTimeField(auto_now_add=True)
+    name        = models.CharField(max_length=200, unique=True)
+    price       = models.DecimalField(max_digits=10, decimal_places=2)
+    price_id    = models.CharField(max_length=100, help_text="Stripe Price IP (e.g. price_ABC123)")
+    is_active   = models.BooleanField(default=True)
+    created_at  = models.DateTimeField(auto_now_add=True)
 
-    category = models.ForeignKey(
+    category    = models.ForeignKey(
         Category,
         related_name="products",
         on_delete=models.PROTECT
@@ -42,6 +43,10 @@ class Product(models.Model):
         null=True,
         blank=True
     )
+
+    features    = models.JSONField(default=list, blank=True, help_text="List of feature strings")
+    functions   = models.JSONField(default=list, blank=True, help_text="List of function strings")
+    specifications   = models.JSONField(default=list, blank=True, help_text="e.g. [{ 'key': 'Voltage', 'value': '9–16 V' }, …]")
 
     def __str__(self):
         return self.name

@@ -1,0 +1,27 @@
+/* make sure header floats above the overlay */
+app-header {
+  position: sticky;
+  top: 0;
+  z-index: 1000;     /* keep it above your overlay/content */
+  /* optional: add a background and shadow so it overlaps cleanly */
+  background: white;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+/* the overlay covers everything below the header */
+.gray-overlay {
+  position: fixed;
+  top: var(--header-height, 64px);  /* or hard-code your header’s height */
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(128, 128, 128, 0.6);
+  z-index: 10;
+  pointer-events: none;  /* so clicks still pass through if needed */
+}
+
+/* optional—if you want to dim the routed content itself too */
+.main-content {
+  position: relative;
+  z-index: 5;
+}

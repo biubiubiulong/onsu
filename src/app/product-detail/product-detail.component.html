@@ -1,12 +1,32 @@
-<app-header></app-header>
-
 <!-- src/app/pages/product-detail/product-detail.component.html -->
-<div class="detail-container" *ngIf="product; else loading">
-  <h2>{{ product.name }}</h2>
-  <p>Category: {{ category }} / {{ subcategory }}</p>
-  <p>Price: €{{ product.price }}</p>
-  <!-- add image carousel, description, Add to Cart, etc. -->
-</div>
-<ng-template #loading>
-  <p>Loading product…</p>
-</ng-template>
+ <div *ngIf="product; else loading" class="page-container">
+  <nav class="breadcrumbs">
+    <ng-container *ngFor="let bc of breadcrumbs; let last = last">
+      <a [routerLink]="bc.url">{{ bc.label }}</a>
+      <span *ngIf="!last" class="separator">
+        <img src="assets/icons/arrow_right.svg" alt="Custom Icon" width="10" height="10">
+      </span>
+    </ng-container>
+  </nav>
+
+  <div class="content">
+    <div class="image">
+      <img [src]="productService.getCurrentImage(product.id)?.image">
+    </div>
+
+    <div class="details">
+      <h2> {{ product.name }} </h2>
+      <p class="category">Belongs to: {{ product.category.name }}</p>
+      
+      <h3>Specification:</h3>
+      <ul>
+        <li>5KΩ Potentiometer (Variable Resistor): pcs</li>
+      </ul>
+    </div>
+  </div>
+
+  </div>
+  
+  <ng-template #loading>
+    <p>Loading product…</p>
+  </ng-template>

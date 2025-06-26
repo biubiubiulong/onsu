@@ -1,1 +1,9 @@
-<router-outlet></router-outlet>
+<app-header (onMenuToggle)="onMenuToggle($event)"></app-header>
+
+<!-- the gray overlay, shown only when you want the rest dimmed -->
+<div class="gray-overlay" *ngIf="isMenuOpen"></div>
+
+<!-- the rest of your app -->
+<div class="main-content">
+  <router-outlet></router-outlet>
+</div>

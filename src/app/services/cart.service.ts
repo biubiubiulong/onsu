@@ -6,6 +6,7 @@ import { Product } from '../product.model';
 export interface CartItem {
   product: Product;
   quantity: number;
+  subtotal: number;
 }
 
 @Injectable({
@@ -16,7 +17,7 @@ export class CartService {
 
   // Expose a BehaviorSubject that holds the current total quantity
   private totalQuantitySubject = new BehaviorSubject<number>(0);
-  totalQuantity$: Observable<number> = this.totalQuantitySubject.asObservable();
+  totalQuantity: Observable<number> = this.totalQuantitySubject.asObservable();
 
   constructor() {}
 
@@ -26,7 +27,8 @@ export class CartService {
     if (existing) {
       existing.quantity += quantity;
     } else {
-      this.items.push({ product, quantity });
+      const subtotal = Number(product.price) * quantity;
+      this.items.push({ product, quantity, subtotal });
     }
     this.emitTotalQuantity();
     console.log('Cart after add:', this.items);

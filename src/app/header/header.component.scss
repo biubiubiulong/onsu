@@ -6,6 +6,7 @@
     height: 6em;
     color: #18375b;
     background-color: white;
+    border-bottom: 0.08em solid lightgrey;
   
     .left-section,
     .center-section,
@@ -32,11 +33,40 @@
       flex: 1;
       justify-content: center;
   
-      .search-bar {
+      .custom-search {
+        display: flex;
+        align-items: center;
+        border: 1px solid #ccc;
+        border-radius: 2px;
+        padding: 0 8px;
+        height: 35px;
         width: 100%;
-        max-width: 60vw;
-        height: 4.2em;   
+        max-width: 40vw;
+
+        input {
+          border: none;
+          outline: none;
+          flex: 1;
+          font-size: 13px;
+          height: 90%;
+        }
+
+        button {
+          background: none;
+          border: none;
+          cursor: pointer;
+          padding: 0 4px;
+          display: flex;
+          align-items: center;
+          height: 100%;
+
+          mat-icon {
+            font-size: 28px;
+            line-height: 1;
+          }
+        }
       }
+
     }
   
     ::ng-deep .mat-form-field-appearance-outline.mat-focused .mat-form-field-outline-thick {
@@ -46,10 +76,6 @@
   
     .right-section {
       gap: 1em;
-  
-      button {
-        padding: 0.5em 1em;
-      }
   
       img {
         cursor: pointer;
@@ -61,7 +87,7 @@
   display: flex;
   justify-content: center; /* Center the second row */
   align-items: center;
-  height: 3em;
+  height: 2em;
   background-color: #00458b; /* Light gray for the second row */
   padding: 10px 0; /* Add padding for the second toolbar to make it look better */
 
@@ -79,4 +105,88 @@
 button {
   border-radius: 4px; /* Add this to round ripple corners */
   overflow: hidden;   /* Ensure ripple stays inside */
+}
+
+.menu-wrapper:hover {
+  color: #4c4648;
+}
+
+.menu-wrapper {
+  color: grey;
+  position: relative;
+  display: inline-block;
+  font-family: system-ui;
+  font-size: large;
+  cursor: pointer;
+
+  .menu-trigger {
+    background: none;
+    border: none;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    cursor: pointer;
+
+    img {
+      transition: transform 0.2s ease;
+    }
+
+    img.rotated {
+      transform: rotate(-180deg);
+    }
+  }
+
+  .dropdown-panel:hover {
+    color: #4c4648;
+  }
+
+  .dropdown-panel {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    padding: 1em 0.1em;
+    text-align: center;
+    background: white;
+    opacity: 0;
+    transform: translateY(-10px);
+    pointer-events: none;
+    transition: all 200ms ease-in-out;
+    z-index: 1000;
+    min-width: 180px;
+    border-radius: 1px;
+
+    .menu-item {
+      padding: 8px 12px;
+      color: grey;
+    }
+
+    .menu-item:hover {
+      color:  #4c4648;
+    }
+  }
+  
+  .dropdown-panel.open {
+    opacity: 1;
+    pointer-events: auto;
+    transform: translateY(0) translateX(0);
+  }
+
+  @keyframes dropdown-appear {
+    from {
+      opacity: 0;
+      transform: translateY(20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  
+  .overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.5); // adjustable gray
+    z-index: 1000;
+    pointer-events: none;
+  }
 }
