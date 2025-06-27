@@ -7,21 +7,16 @@ import { ProductDetailComponent } from './product-detail/product-detail.componen
 
 const routes: Routes = [
   { path: 'products', component: ProductListComponent },
-  {
-    path: 'products/:category',
-    component: ProductListComponent
-  },
-  {
-    path: 'products/:category/:subcategory',
-    component: ProductListComponent
-  },
-  {
-    path: 'products/:category/:subcategory/:id',
-    component: ProductDetailComponent
-  },
+  { path: 'products/:category', component: ProductListComponent },
+  { path: 'products/:category/:subcategory', component: ProductListComponent },
+
+  { path: 'products/:category/:subcategory/:id', component: ProductDetailComponent },
+  { path: 'products/:category/:id',component: ProductDetailComponent },
+
   { path: 'checkout', component: CheckoutComponent },
   { path: 'success', component: CheckoutComponent },
   { path: 'cancel', component: CheckoutComponent },
+  
   { path: '', component: HomeComponent }, // Home route
   { path: '**', redirectTo: '' } // Catch-all for invalid routes
 ];

@@ -2,7 +2,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { firstValueFrom, Observable } from 'rxjs';
-import { PaginatedProducts, Product, ProductImage } from '../product.model';
+import { PaginatedProducts, Product, ProductImage, SubcategoryName } from '../product.model';
 
 @Injectable({ providedIn: 'root' })
 export class ProductService {
@@ -15,17 +15,33 @@ export class ProductService {
   }
 
   // api call, the list
-  async getProducts(): Promise<Observable<PaginatedProducts>> {
-    const results = this.http.get<PaginatedProducts>(this.apiUrl);
-    this.products = (await firstValueFrom(results)).results
-    return results;
+  async getProducts(): Promise<PaginatedProducts> {
+    const paginated =  await firstValueFrom(this.http.get<PaginatedProducts>(this.apiUrl));
+    this.products = paginated.results
+    return paginated;
   }
 
   // should be an api call
   async getProductById(id: string): Promise<Product | undefined> {
-    return (await firstValueFrom(this.http.get<PaginatedProducts>(this.apiUrl))).results[0];
+    return (await firstValueFrom(this.http.get<Product>(`${this.apiUrl}${id}/`)));
   }
 
+  async getProductByCategory(category: number, subcategory?: SubcategoryName): Promise<PaginatedProducts | undefined> {
+    try {
+      let url = `${this.apiUrl}category/${category}/`;
+
+      if (subcategory) {
+        url += `subcategory/${subcategory}/`;
+      }
+
+      const paginated = await firstValueFrom(this.http.get<PaginatedProducts>(url));
+      this.products = paginated.results
+      return paginated;
+    } catch(error) {
+      console.error('Failed to fetch products by category:', error);
+      return undefined;
+    }
+  }
   
   // ========== Image carousel logic (unchanged) ==========
   prevImage(id: string): void {

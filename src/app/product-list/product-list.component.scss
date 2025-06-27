@@ -19,6 +19,11 @@
         text-decoration: underline;
       }
     }
+    a.disabled {
+      pointer-events: none;
+      color: gray;
+      text-decoration: none;
+    }
     .separator {
       margin: 0 8px;
       color: #999;

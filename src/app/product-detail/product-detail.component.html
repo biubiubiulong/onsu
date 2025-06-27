@@ -2,7 +2,7 @@
  <div *ngIf="product; else loading" class="page-container">
   <nav class="breadcrumbs">
     <ng-container *ngFor="let bc of breadcrumbs; let last = last">
-      <a [routerLink]="bc.url">{{ bc.label }}</a>
+      <a [routerLink]="bc.url" [class.disabled]="last" (click)="last && $event.preventDefault()">{{ bc.label }}</a>
       <span *ngIf="!last" class="separator">
         <img src="assets/icons/arrow_right.svg" alt="Custom Icon" width="10" height="10">
       </span>

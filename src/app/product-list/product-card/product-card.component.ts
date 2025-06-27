@@ -97,6 +97,10 @@ export class ProductCardComponent implements OnInit {
 
   gotoProductDetail($event: MouseEvent) {
     $event.stopPropagation();
-    this.router.navigate([this.product.id], { relativeTo: this.route });
+    let path = ['products', this.product.category.id];
+    path = this.product.subcategory
+    ? [...path, this.product.subcategory.name, this.product.id]
+    : [...path, this.product.id];
+    this.router.navigate(path);
   }
 }

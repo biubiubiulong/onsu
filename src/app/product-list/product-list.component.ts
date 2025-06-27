@@ -26,10 +26,10 @@ export class ProductListComponent implements OnInit {
   constructor(private productService: ProductService, private route: ActivatedRoute) {}
 
   async ngOnInit(): Promise<void> {
-    await this.fetchProducts();
-    this.route.paramMap.subscribe((params: ParamMap) => {
-      this.category = params.get('category') as CategoryType;
+    this.route.paramMap.subscribe(async (params: ParamMap) => {
+      this.category = Number(params.get('category')) as CategoryType;
       this.subcategory = params.get('subcategory') as OEMScanTool;
+      await this.fetchProducts();
       this.applyFilters();
 
       const category = CategoryTypeLabel.get(this.category);
@@ -49,16 +49,9 @@ export class ProductListComponent implements OnInit {
     this.loading = true;
     this.errorMessage = null;
 
-    (await this.productService.getProducts()).subscribe({
-      next: (paginated: PaginatedProducts) => {
-        this.products = paginated.results;
-        this.loading = false;
-      },
-      error: (err) => {
-        this.errorMessage = "Failed to load products.";
-        this.loading = false;
-      }
-    })
+    const paginated = await this.productService.getProductByCategory(this.category, this.subcategory);
+    this.products = paginated?.results ?? [];
+    this.loading = false;
   }
 
   private applyFilters() {

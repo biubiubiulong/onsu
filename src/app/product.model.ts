@@ -6,7 +6,7 @@ export enum OTHER {
 }
 
 export enum OEMScanTool {
-  TestLeadKit = 'test-lead-kit',
+  TestLeadKit = 'test_lead_kit',
   ADAS = 'adas',
   Audi = 'audi',
   Porsche = 'porsche'
@@ -20,8 +20,8 @@ export const OEMScanToolLabel = new Map<OEMScanTool, string>([
 ])
 
 export enum CategoryType {
-  OEMScanTool = 'oem-scan-tool',
-  Other = 'other'
+  OEMScanTool = 1,
+  Other
 }
 
 export const CategoryTypeLabel = new Map<CategoryType, string>([

@@ -27,10 +27,10 @@ export class ProductDetailComponent implements OnInit {
 
   ngOnInit(): void {
     this.route.paramMap.subscribe(async (params: ParamMap) => {
-      this.category = params.get('category') as CategoryType;
+      this.category = Number(params.get('category')) as CategoryType;
       this.subcategory = params.get('subcategory') as OEMScanTool;
       this.id = params.get('id');
-
+      console.log("id: ", this.id)
       if (this.id) {
         this.product = await this.productService.getProductById(this.id);
       }
