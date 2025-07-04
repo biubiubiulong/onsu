@@ -78,7 +78,7 @@
   </div>
   <!-- ================== Product Info (Category, Name, Price) ================== -->
   <div (click)="gotoProductDetail($event)" class="info clickable">
-    <div class="category">{{ product.category }}</div>
+    <div class="category">{{ product.category.name }}</div>
     <div class="name">{{ product.name }}</div>
     <div class="price">€ {{ product.price }}</div>
   </div>

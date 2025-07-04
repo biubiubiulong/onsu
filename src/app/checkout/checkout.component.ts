@@ -3,6 +3,7 @@ import { Component, OnInit } from '@angular/core';
 import { Observable } from 'rxjs';
 import { CartItem, CartService } from '../services/cart.service';
 import { loadStripe } from '@stripe/stripe-js';
+import { ProductService } from '../services/product.service';
 
 @Component({
   selector: 'app-checkout',
@@ -15,7 +16,7 @@ export class CheckoutComponent implements OnInit {
   totalPrice: string;
   stripe: any;
 
-  constructor(private cartService: CartService) {
+  constructor(private cartService: CartService, public productService: ProductService) {
     // Subscribe to total quantity or total price if you want
     this.totalItems = this.cartService.totalQuantity;
     this.totalPrice = this.cartItems.reduce((sum, item) => sum + Number(item.product.price) * item.quantity, 0).toFixed(2)

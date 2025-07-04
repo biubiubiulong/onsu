@@ -9,7 +9,7 @@
   
     <div *ngIf="cartItems.length > 0" class="checkout-list">
       <div class="checkout-item" *ngFor="let item of cartItems">
-        <img [src]="item.product.images[0]" alt="{{ item.product.name }}" />
+        <img [src]="productService.getCurrentImage(item.product.id)?.image" alt="{{ item.product.name }}" />
         <div class="details">
           <div class="name">{{ item.product.name }}</div>
           <div class="quantity">Quantity: {{ item.quantity }}</div>
